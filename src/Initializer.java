@@ -3,11 +3,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class Initializer {
-
-    public static List<Field> initFields() {
+    public static HashMap<String, Field> initFields(String filename) {
         List<Field> createdFields = new ArrayList<Field>(24);
         try {
-            Scanner sc = new Scanner(new FileReader("./data/fieldData"));
+            Scanner sc = new Scanner(new FileReader(filename));
 
             while(sc.hasNext()){
                 String coordinates = sc.nextLine();
@@ -26,7 +25,10 @@ public class Initializer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return createdFields;
+        HashMap<String, Field> fieldmap = new HashMap<>();
+        createdFields.stream()
+                .forEach(field -> fieldmap.put(field.getCoordinates(), field));
+        return fieldmap;
     }
 
     private static Field getField(List<Field> createdFields, String coordinates){
