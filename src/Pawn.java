@@ -18,13 +18,23 @@ public class Pawn {
         return player;
     }
 
-    public void setField(Field field){
-
+    public void setCurrentLocation(Field field){
+        if(!field.isTaken()){
+            if(currentLocation != null){
+                currentLocation.removePawn();
+            }
+            field.setPawn(this);
+            currentLocation = field;
+        }
     }
-
 
     @Override
     public int hashCode() {
         return Integer.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return Character.toString(player) + " " + currentLocation;
     }
 }

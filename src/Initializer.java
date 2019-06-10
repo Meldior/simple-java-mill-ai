@@ -7,7 +7,6 @@ public class Initializer {
         List<Field> createdFields = new ArrayList<Field>(24);
         try {
             Scanner sc = new Scanner(new FileReader(filename));
-
             while(sc.hasNext()){
                 String coordinates = sc.nextLine();
                 if(coordinates.equals("END"))

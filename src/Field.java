@@ -61,6 +61,10 @@ public class Field {
         this.pawn = pawn;
     }
 
+    public void removePawn(){
+        this.pawn = null;
+    }
+
     public Optional<Field> getTopField(){
         return adjacentFields.stream()
                 .filter(f -> f.getCoordinates().charAt(1) > coordinates.charAt(1))

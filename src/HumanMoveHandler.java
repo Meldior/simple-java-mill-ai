@@ -33,6 +33,51 @@ public class HumanMoveHandler implements MoveHandler {
             }
             game.removePawn(coordinates);
         }
+/*
+        else {
+
+            System.out.println("Select the pawn that you wish to move");
+            List<Move> possibleMoves;
+            possibleMoves = player.getPossibleMoves();
+            ArrayList<Field> possibleFields = new ArrayList<>();
+            Pawn pawn = null;
+            boolean isValidPawn = false;
+            while(!isValidPawn){
+                String coordinates = sc.nextLine();
+                for(Move move: possibleMoves){
+                    if(move.getFrom().getCoordinates().equals(coordinates)){
+                        isValidPawn = true;
+                        pawn = move.getFrom().getPawn();
+                        possibleFields.add(move.getTo());
+                    }
+                }
+                if(!isValidPawn)
+                    System.out.println("Wrong field, try again");
+            }
+            System.out.println("Pick a place to move the pawn to");
+            String coordinates;
+            boolean isValidField = false;
+            while(!isValidField){
+                coordinates = sc.nextLine();
+                for(Field field: possibleFields){
+                    if(field.getCoordinates().equals(coordinates)){
+                        isValidField = true;
+                        player.movePawn(field.getCoordinates(), pawn);
+                        break;
+                    }
+                }
+                if(!isValidField)
+                    System.out.println("Wrong field, try again");
+            }
+        }
+        */
+    }
+}
+
+
+
+
+ /*
         else if(game.getState() == GameState.MOVING_PAWNS){
             System.out.println("Select the pawn that you wish to move");
             List<Move> possibleMoves = player.getPossibleMoves();
@@ -67,7 +112,7 @@ public class HumanMoveHandler implements MoveHandler {
                     System.out.println("Wrong field, try again");
             }
         }
-        /*
+
         else if(game.getState() == GameState.THREE_LEFT){
             System.out.println("Select the pawn that you wish to move");
             List<Move> possibleMoves = player.getPossibleMoves();
@@ -89,5 +134,3 @@ public class HumanMoveHandler implements MoveHandler {
         }
 
          */
-    }
-}
