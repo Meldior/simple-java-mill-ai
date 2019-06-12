@@ -7,6 +7,7 @@ public class ChangingPositionMove extends PossibleDeletionMove{
 
     @Override
     void makeMove(Player player) {
+        //player.lastUsedField = from;
         player.movePawn(to.getCoordinates(), from.getPawn());
         checkMills(player);
     }

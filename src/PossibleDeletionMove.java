@@ -13,7 +13,6 @@ public abstract class PossibleDeletionMove extends Move {
             deletingMoves = new ArrayList<>();
             HashSet<Pawn> pawnsToDelete = player.getGame().getOtherPlayer(player).getPawns();
             Iterator<Pawn> pawnIterator = pawnsToDelete.iterator();
-            //System.out.println(pawnsToDelete);
             int i = 0;
             while(i < mills && pawnIterator.hasNext()){
                 Pawn pawn = pawnIterator.next();

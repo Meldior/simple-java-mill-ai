@@ -33,9 +33,8 @@ public class HumanMoveHandler implements MoveHandler {
             }
             game.removePawn(coordinates);
         }
-/*
-        else {
 
+        else {
             System.out.println("Select the pawn that you wish to move");
             List<Move> possibleMoves;
             possibleMoves = player.getPossibleMoves();
@@ -70,7 +69,7 @@ public class HumanMoveHandler implements MoveHandler {
                     System.out.println("Wrong field, try again");
             }
         }
-        */
+
     }
 }
 

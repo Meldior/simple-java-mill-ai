@@ -21,6 +21,7 @@ public class TwoPieceConfigurationHeuristic implements Heuristic {
         for(Pawn pawn: otherPlayer.getPawns()){
             numOfOtherPlayersTwoPieceConfigurations += countTwoPieceConfigurations(pawn.getLocation(), otherPlayer);
         }
+        //System.out.println(numOfTwoPieceConfigurations - numOfOtherPlayersTwoPieceConfigurations);
         return numOfTwoPieceConfigurations - numOfOtherPlayersTwoPieceConfigurations;
     }
 }

@@ -9,8 +9,10 @@ public abstract class Player {
     private HashSet<Pawn> pawns;
     private int placedPawns;
     private char color;
-    protected static final int amountOfPawns = 9;
     private boolean threeLeft;
+
+    protected static final int amountOfPawns = 9;
+    //protected Field lastUsedField;
 
 
     public Player(char color){
@@ -43,7 +45,7 @@ public abstract class Player {
     }
 
     public boolean hasLost(){
-        return game.getState() != GameState.DEPLOYING && pawns.size() <= 2;
+        return (game.getState() == GameState.MOVING_PAWNS && pawns.size() <= 2) || !hasMove();
     }
 
     public void setGame(Game game) {
@@ -64,7 +66,6 @@ public abstract class Player {
     }
 
     public List<Move> getPossibleMoves(){
-        game.checkState();
         ArrayList<Move> moves = new ArrayList<>();
         if(game.getState() == GameState.DEPLOYING){
             for(Field field: game.getEmptyFields()){
@@ -76,20 +77,27 @@ public abstract class Player {
                 moves.add(new DeletingMove(pawn.getLocation()));
             }
         }
-        else {
+        else if(!threeLeft){
             for (Pawn pawn : pawns) {
                     for (Field field : pawn.getLocation().getAdjacentFields()) {
-                        if (!field.isTaken()) {
+                        if (!field.isTaken() /*&& field != lastUsedField*/) {
                             moves.add(new ChangingPositionMove(pawn.getLocation(), field));
                         }
                     }
                 }
             }
+        else {
+            for (Pawn pawn : pawns) {
+                for (Field field : game.getEmptyFields()) {
+                    moves.add(new ChangingPositionMove(pawn.getLocation(), field));
+                    //if(field != lastUsedField){
+                        //}
+                }
+            }
+        }
 
-        //TODO THREE LEFT MEME
 
-        //game.painter.paintBoard();
-        //System.out.println(moves);
+
         return moves;
     }
 
@@ -101,12 +109,11 @@ public abstract class Player {
         else {
             for(Pawn pawn: pawns){
                 for(Field field: pawn.getLocation().getAdjacentFields())
-                    if(!field.isTaken()){
+                    if(!field.isTaken() /*&& field != lastUsedField*/){
                         return true;
                     }
             }
         }
-        System.out.println("no moves left!");
         return false;
     }
 
@@ -114,13 +121,16 @@ public abstract class Player {
         return pawns;
     }
 
+
     public void movePawn(String coordinates, Pawn pawn) {
         game.placePawn(coordinates, pawn);
     }
 
     public void reversePawnPlacing(Pawn pawn){
-        pawns.remove(pawn);
-        pawn.getLocation().removePawn();
+        if (pawn != null){
+            pawns.remove(pawn);
+            pawn.getLocation().removePawn();
+        }
         placedPawns--;
     }
 

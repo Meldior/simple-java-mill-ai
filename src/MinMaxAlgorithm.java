@@ -1,16 +1,16 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class MinMaxAlgorithm extends Algorithm {
 
     MinMaxAlgorithm(Heuristic heuristic, int algorithm_depth){
         super(heuristic, algorithm_depth);
+        this.timeChecker = new TimeChecker("MinMax");
     }
 
 
 
     private int minmax(Player maximizingPlayer, Player minimizingPlayer, Game game, int depth, boolean isMaximizing){
+
         //System.out.println(depth);
+        timeChecker.tick();
         game.checkState();
         if(depth == algorithm_depth){
             return heuristic.evaluate(maximizingPlayer, minimizingPlayer, game);
@@ -22,9 +22,11 @@ public class MinMaxAlgorithm extends Algorithm {
                 int maxVal = minmax(maximizingPlayer, minimizingPlayer, game, depth + 1, false);
                 if(value < maxVal && depth == 0){
                     bestMove = move;
+                    //System.out.println("changed: " + value + " " + maxVal);
                 }
                 value = max(value, maxVal);
                 move.reverseMove(maximizingPlayer);
+
             }
             return value;
         }
@@ -44,7 +46,10 @@ public class MinMaxAlgorithm extends Algorithm {
     @Override
     public Move getNextMove(Player maximizingPlayer, Player minimizingPlayer, Game game) {
         bestMove = null;
+        timeChecker.clear();
+        timeChecker.start();
         minmax(maximizingPlayer, minimizingPlayer, game, 0, true);
+        timeChecker.end();
         return bestMove;
     }
 }

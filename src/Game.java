@@ -8,6 +8,8 @@ public class Game {
     private Player black, white, currentPlayer;
     public BoardPainter painter;
     private int timeout;
+    private int moveCounter;
+    private final int MAX_MOVES = 400;
 
     public Game(Player white, Player black, int timeout){
         state = GameState.DEPLOYING;
@@ -18,8 +20,8 @@ public class Game {
         this.white.setGame(this);
         painter = new ConsoleBoardPainter(this.board.getFields());
         currentPlayer = white;
-        //simulating = false;
         this.timeout = timeout;
+        this.moveCounter = 0;
     }
 
 
@@ -69,7 +71,7 @@ public class Game {
         System.out.println("starting game!");
 
         painter.paintBoard();
-        while(state != GameState.FINISHED){
+        while(state != GameState.FINISHED && moveCounter <= MAX_MOVES){
             System.out.println(currentPlayer);
             try{
                 Thread.currentThread().sleep(timeout);
@@ -81,70 +83,25 @@ public class Game {
             changePlayer();
             checkState();
             painter.paintBoard();
+            moveCounter++;
         }
         if(white.hasLost()){
             System.out.println("winner: red");
         }
         else
             System.out.println("winner: yellow");
-        painter.paintBoard();
-
-
-/*
-        List<DeployingMove> moves = new ArrayList<>();
-        moves.add(new DeployingMove(getField("a1").get()));
-        moves.add(new DeployingMove(getField("a4").get()));
-        moves.add(new DeployingMove(getField("a7").get()));
-        DeployingMove opponentMove = new DeployingMove(getField("d3").get());
-        DeployingMove opponentMove2 = new DeployingMove(getField("g1").get());
-        DeployingMove opponentMove3 = new DeployingMove(getField("d2").get());
-        opponentMove.makeMove(getOtherPlayer());
-        opponentMove2.makeMove(getOtherPlayer());
-        opponentMove3.makeMove(getOtherPlayer());
-        System.out.println(currentPlayer.getPawns());
-        System.out.println(getOtherPlayer().getPawns());
-        for(DeployingMove move: moves){
-            System.out.println(currentPlayer.getPawns());
-            System.out.println(getOtherPlayer().getPawns());
-            move.makeMove(currentPlayer);
-            System.out.println(currentPlayer.getPawns());
-            System.out.println(getOtherPlayer().getPawns());
-            painter.paintBoard();
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        painter.paintBoard();
-        ArrayList<ChangingPositionMove> moves2 = new ArrayList<>();
-        moves2.add(new ChangingPositionMove(getField("a1").get(), getField("d1").get()));
-        moves2.get(0).makeMove(currentPlayer);
-        painter.paintBoard();
-        System.out.println(currentPlayer.getPawns());
-        System.out.println(getOtherPlayer().getPawns());
-
-        /*
-
-
-        System.out.println(getOtherPlayer().getPawns());
-
-        for(int i = moves.size()-1; i >= 0; i--){
-            System.out.println(currentPlayer.getPawns());
-            System.out.println(getOtherPlayer().getPawns());
-            moves.get(i).reverseMove(currentPlayer);
-            System.out.println(currentPlayer.getPawns());
-            System.out.println(getOtherPlayer().getPawns());
-            painter.paintBoard();
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if(white instanceof AIPlayer){
+            ((AIPlayer) white).getAlgorithm().timeChecker.logToFile("./timeData/" + white.getClass().getName()
+                    + "-" + ((AIPlayer) white).getAlgorithm().getHeuristic().getClass().getName() + "-" +
+                    ((AIPlayer) white).getAlgorithm().getAlgorithm_depth() + ".txt");
         }
 
-         */
-
+        if(black instanceof  AIPlayer){
+            ((AIPlayer) black).getAlgorithm().timeChecker.logToFile("./timeData/" + black.getClass().getName()
+                    + "-" + ((AIPlayer) black).getAlgorithm().getHeuristic().getClass().getName() + "-"
+                    + ((AIPlayer) black).getAlgorithm().getAlgorithm_depth() + ".txt");
+        }
+        painter.paintBoard();
     }
 
     private void changePlayer(){

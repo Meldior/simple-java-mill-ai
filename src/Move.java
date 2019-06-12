@@ -10,6 +10,14 @@ public abstract class Move {
 
     abstract void reverseMove(Player player);
 
+    public Field getTo() {
+        return to;
+    }
+
+    public Field getFrom() {
+        return from;
+    }
+
     @Override
     public String toString() {
         if(from == null){

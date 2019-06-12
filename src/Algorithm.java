@@ -1,7 +1,11 @@
+import java.sql.Time;
+
 public abstract class Algorithm {
     protected Heuristic heuristic;
     protected int algorithm_depth;
     protected Move bestMove;
+    protected TimeChecker timeChecker;
+
 
 
 
@@ -20,4 +24,12 @@ public abstract class Algorithm {
     }
 
     public abstract Move getNextMove(Player maximizingPlayer, Player minimizingPlayer, Game game);
+
+    public Heuristic getHeuristic() {
+        return heuristic;
+    }
+
+    public int getAlgorithm_depth() {
+        return algorithm_depth;
+    }
 }
